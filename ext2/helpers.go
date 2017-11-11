@@ -65,3 +65,6 @@ func GetFileMode(m uint8) string {
 
 	return ft
 }
+
+// MaxPadLen is useful for string representation of FSReader.
+const MaxPadLen int = len("Character Device")
