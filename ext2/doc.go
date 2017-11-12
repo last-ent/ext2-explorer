@@ -16,5 +16,12 @@ An EXT2 File System can pictorially be seen as follows:
 
 | Super Block (1 block) | Group Descriptors (n blocks) | Data Block Bitmap (1 block) | I-Node Bitmap (1 block) | I-Node Table (n blocks) | Data Blocks (n blocks) |
 
+Inode Table
+============
+
+| Inode 0 | Inode 1 | Inode 2 | ... | Inode n |
+
+Size Of Inode: 128 Bytes
+
 */
 package ext2

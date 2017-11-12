@@ -27,15 +27,37 @@ func loadfs(w http.ResponseWriter, r *http.Request) {
 	w.Write(b.Bytes())
 }
 
+func readFiles(fs *ext2.FSReader) []byte {
+	var buff bytes.Buffer
+	for _, de := range fs.RootDir.Dentries {
+		if de.FileType != "Regular File" {
+			continue
+		}
+		file := bytes.NewBufferString("==================================================")
+		file.WriteString("==================================================\n\n")
+		file.WriteString(fmt.Sprintf("File Name: %s\n", de.Name))
+
+		file.WriteString("\n--------------------------------------------------\n\n")
+		if content, err := fs.ReadFile("/", de.Name); err == nil {
+			file.Write(bytes.Trim(content, "\x00"))
+
+			file.WriteString("\n==================================================")
+			file.WriteString("==================================================\n")
+			buff.Write(file.Bytes())
+		}
+	}
+
+	return buff.Bytes()
+}
+
 func showfs(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	path := strings.TrimSpace(r.Form.Get("path"))
 	fs := ext2.NewFSReader(path, ext2.DEFAULT_BLOCK_SIZE)
-	// var b bytes.Buffer
-	// b.WriteString(strings.Join(fs.BufferString(), "\n"))
-
-	// b.WriteString(fmt.Sprintf("%#v", fs.ReprMap()))
 	b := fs.BufferedString()
+	b.WriteString("\n\n")
+
+	b.Write(readFiles(fs))
 
 	w.Write(b.Bytes())
 }

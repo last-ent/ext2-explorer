@@ -64,7 +64,7 @@ func (fs *FSReader) ReadFile(dir string, fName string) ([]byte, error) {
 func (fs *FSReader) BufferedString() bytes.Buffer {
 	var buff bytes.Buffer
 
-	buff.WriteString("\n\n\n--------------------------------------------------\n\n\n")
+	buff.WriteString("\n--------------------------------------------------\n\n\n")
 	buff.WriteString("\tEXT2 FILE SYSTEM DETAILS")
 
 	buff.WriteString("\n\n\n--------------------------------------------------\n\n\n")
